@@ -28,12 +28,11 @@
     "webpack-dev-server": "4.9.3"
   },
   "engines": {
-    "node": "18"
+    "node": "16"
   },
   "dependencies": {
     "dayjs": "^1.10.7",
     "flatpickr": "^4.6.9",
-    "he": "^1.2.0",
-    "node": "^18.12.1"
+    "he": "^1.2.0"
   }
 }
