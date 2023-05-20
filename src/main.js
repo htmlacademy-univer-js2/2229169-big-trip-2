@@ -1,25 +1,24 @@
-import MenuView from './view/menu.js';
-import FilterView from './view/filter.js';
-import { render } from './render.js';
-import SortingView from './view/sorting';
-import EventsListView from './view/events-list.js';
-import EventView from './view/event.js';
-import EditFormView from './view/edit-form.js';
+import EventsModel from './model/events-model.js';
+import MenuView from './view/menu-view.js';
+import FilterView from './view/filter-view.js';
+import { render, RenderPosition } from './render.js';
+import SortingView from './view/sorting-view';
+import TripInfoView from './view/trip-info-view';
+import RootPresenter from './presenter/root-presenter.js';
 
 const headerElement = document.querySelector('.page-header');
 const mainElement = document.querySelector('.page-main');
 
+const tripMainElement = document.querySelector('.trip-main');
 const navigation = headerElement.querySelector('.trip-controls__navigation');
 const filters = headerElement.querySelector('.trip-controls__filters');
 const content = mainElement.querySelector('.trip-events');
 
+const routePresenter = new RootPresenter();
+const eventsModel = new EventsModel();
+
 render(new MenuView(), navigation);
+render(new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
 render(new FilterView(), filters);
 render(new SortingView(), content);
-render(new EventsListView(), content);
-
-const eventsList = content.querySelector('.trip-events__list');
-render(new EditFormView(), eventsList);
-for (let i = 0; i < 3; i++) {
-  render(new EventView(), eventsList);
-}
+routePresenter.init(content, eventsModel);
