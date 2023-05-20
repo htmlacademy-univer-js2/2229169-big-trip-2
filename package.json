@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "test": "npm run eslint",
-    "lint": "eslint src/",
+    "eslint": "eslint src/",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development --open"
   },
