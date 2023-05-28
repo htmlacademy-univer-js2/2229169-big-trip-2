@@ -1,5 +1,9 @@
 import { createElement } from '../render.js';
+<<<<<<< HEAD
 import { DESTINATIONS } from '../mock/const.js';
+=======
+import { DESTINATIONS } from '../mock/const';
+>>>>>>> 9a31c8527bcb12114c0249947ada48ffefe0926c
 import { OFFERS, OFFERS_BY_TYPE } from '../mock/offers.js';
 
 const createDestionationsOptionsTemplate = (destinations) =>
@@ -148,4 +152,8 @@ export default class EditFormView {
   removeElement() {
     this.element = null;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9a31c8527bcb12114c0249947ada48ffefe0926c
