@@ -3,6 +3,7 @@
   "version": "16.0.0",
   "private": true,
   "description": "Проект «Большое путешествие» от HTML Academy",
+<<<<<<< HEAD
   "browserslist": [
     "last 2 versions",
     "not dead",
@@ -32,5 +33,17 @@
   },
   "dependencies": {
     "dayjs": "^1.11.7"
+=======
+  "scripts": {
+    "eslint": "eslint src/",
+    "test": "npm run eslint"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-htmlacademy": "5.0.0"
+  },
+  "engines": {
+    "node": "16"
+>>>>>>> d1d1cdaf88127eb7374d77499318de8b6734b450
   }
 }
