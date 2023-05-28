@@ -60,23 +60,23 @@ const createEventTemplate = (event) => {
 };
 
 export default class EventView {
-
   constructor(event) {
-    this.event = event;
+    this._element = null;
+    this._event = event;
   }
 
-  getTemplate() {
-    return createEventTemplate(this.event);
+  get template() {
+    return createEventTemplate(this._event);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
     }
-    return this.element;
+    return this._element;
   }
 
   removeElement() {
-    this.element = null;
+    this._element = null;
   }
 }

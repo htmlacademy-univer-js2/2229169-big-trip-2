@@ -17,6 +17,14 @@ const convertEventDateIntoDay = (pointDate) => dayjs(pointDate).format('MMM D');
 
 const convertEventDateIntoHour = (pointDate) => dayjs(pointDate).format('HH:mm');
 
+const generateDates = () => {
+  const startDate = dayjs();
+  return {
+    startDate: startDate,
+    endDate: startDate.add(getRandomInteger(MIN_IN_HOUR / 2, HOUR_IN_DAY * MIN_IN_HOUR * 2), 'minutes')
+  };
+};
+
 const subtractDates = (startDate, endDate) => {
   const dateFrom = dayjs(startDate);
   const dateTo = dayjs(endDate);
@@ -37,4 +45,12 @@ const checkFavoriteOption = (isFavorite) => (isFavorite) ? 'event__favorite-btn-
 
 const capitalizeFirstLetter = (str) => str[0].toUpperCase() + str.slice(1);
 
-export { getRandomInteger, convertEventDateIntoDay, convertEventDateIntoHour, subtractDates, checkFavoriteOption, capitalizeFirstLetter };
+export {
+  getRandomInteger,
+  convertEventDateIntoDay,
+  convertEventDateIntoHour,
+  generateDates,
+  subtractDates,
+  checkFavoriteOption,
+  capitalizeFirstLetter
+};
