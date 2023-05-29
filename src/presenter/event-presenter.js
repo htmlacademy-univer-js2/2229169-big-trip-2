@@ -1,6 +1,9 @@
 import { render, replace, remove } from '../framework/render.js';
 import EventView from '../view/event-view.js';
 import EditFormView from '../view/edit-form-view';
+import { USER_ACTIONS, UPDATE_TYPES } from '../const.js';
+import { isDatesEqual } from '../utils';
+
 
 const MODE = {
   DEFAULT: 'default',
@@ -14,6 +17,8 @@ export default class EventPresenter {
   #eventComponent;
   #editComponent;
   #event;
+  #offers = null;
+  #destinations = null;
   #mode = MODE.DEFAULT;
 
   constructor(pointListContainer, changeData, switchMode) {
@@ -22,16 +27,19 @@ export default class EventPresenter {
     this.#switchMode = switchMode;
   }
 
-  init = (event) => {
+  init = (event, offers, destinations) => {
     this.#event = event;
+    this.#offers = offers;
+    this.#destinations = destinations;
     const previousEventComponent = this.#eventComponent;
     const previousEventEditComponent = this.#editComponent;
-    this.#eventComponent = new EventView(event);
+    this.#eventComponent = new EventView(this.#event, this.#offers, this.#destinations);
     this.#eventComponent.setRollUpHandler(this.#editClickHandler);
     this.#eventComponent.setFavoriteHandler(this.#favoriteClickHandler);
-    this.#editComponent = new EditFormView(event);
+    this.#editComponent = new EditFormView(this.#event, this.#offers, this.#destinations);
     this.#editComponent.setRollDownHandler(this.#eventClickHandler);
     this.#editComponent.setSaveHandler(this.#saveHandler);
+    this.#editComponent.setDeleteHandler(this.#deleteHandler);
 
     if (!previousEventComponent || !previousEventEditComponent) {
       render(this.#eventComponent, this.#eventsListContainer);
@@ -57,7 +65,7 @@ export default class EventPresenter {
 
   resetView = () => {
     if (this.#mode !== MODE.DEFAULT) {
-      this.#editComponent.reset(this.#event);
+      this.#editComponent.reset(this.#event, this.#offers, this.#destinations);
       this.#editToEvent();
     }
   };
@@ -83,15 +91,35 @@ export default class EventPresenter {
     }
   };
 
-  #favoriteClickHandler = () => this.#changeData({ ...this.#event, isFavorite: !this.#event.isFavorite });
+  #favoriteClickHandler = () => this.#changeData(
+    USER_ACTIONS.UPDATE,
+    UPDATE_TYPES.MINOR,
+    { ...this.#event, isFavorite: !this.#event.isFavorite }
+  );
+
   #editClickHandler = () => this.#eventToEdit();
+
   #eventClickHandler = () => {
-    this.#editComponent.reset(this.#event);
+    this.#editComponent.reset(this.#event, this.#offers, this.#destinations);
     this.#editToEvent();
   };
 
-  #saveHandler = (event) => {
-    this.#changeData({ ...event });
+  #saveHandler = (update) => {
+    const isMinorUpdate = isDatesEqual(this.#event.startDate, update.startDate);
+    this.#changeData(
+      USER_ACTIONS.UPDATE,
+      isMinorUpdate ? UPDATE_TYPES.PATCH : UPDATE_TYPES.MINOR,
+      update,
+    );
     this.#editToEvent();
-  }
+  };
+
+  #deleteHandler = (event) => {
+    this.#changeData(
+      USER_ACTIONS.DELETE,
+      UPDATE_TYPES.MINOR,
+      event,
+    );
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  };
 }
