@@ -28,8 +28,7 @@
     "style-loader": "3.3.2",
     "webpack": "5.62.1",
     "webpack-cli": "5.0.1",
-    "webpack-dev-server": "4.4.0",
-    "nanoid": "^4.0.2"
+    "webpack-dev-server": "4.4.0"
   },
   "engines": {
     "node": "16"
