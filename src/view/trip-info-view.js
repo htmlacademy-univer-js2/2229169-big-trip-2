@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from '../framework/view/abstract-view';
+import { DATE_FORMAT_DAY, DATE_FORMAT_SHORT } from '../const';
 
 const addOffersPrices = (eventType, eventOffers, allOffers) => {
   const allOffersForType = allOffers.find(({ type }) => type === eventType).offers;
@@ -32,10 +33,10 @@ const getTripDates = (events) => {
   const endTripDate = events[events.length - 1].endDate;
 
   if (dayjs(startTripDate).month() === dayjs(endTripDate).month()) {
-    return `${dayjs(startTripDate).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format('DD')}`;
+    return `${dayjs(startTripDate).format(DATE_FORMAT_SHORT)}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format(DATE_FORMAT_DAY)}`;
   }
 
-  return `${dayjs(startTripDate).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format('MMM D')}`;
+  return `${dayjs(startTripDate).format(DATE_FORMAT_SHORT)}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format(DATE_FORMAT_SHORT)}`;
 };
 
 const createTripInfoTemplate = (events, allOffers, allDestinations) => {

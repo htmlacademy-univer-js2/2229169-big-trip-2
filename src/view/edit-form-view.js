@@ -156,14 +156,19 @@ export default class EditFormView extends AbstractStatefulView {
     this.#setStopDatepicker();
   }
 
-  static parseEvent = (event, allOffers, allDestinations) => ({
-    ...event,
-    selectedDestinationName: allDestinations.find((item) => (item.id === event.destination)).name,
-    availableOffers: allOffers.find((item) => (item.type === event.type)).offers,
-    isDisabled: false,
-    isSaving: false,
-    isDeleting: false
-  });
+  static parseEvent = (event, allOffers, allDestinations) => {
+    const selectedDestination = allDestinations.find((item) => item.id === event.destination);
+    const availableOffers = allOffers.find((item) => item.type === event.type)?.offers || [];
+
+    return {
+      ...event,
+      selectedDestinationName: selectedDestination?.name || '',
+      availableOffers,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    };
+  };
 
   static parseState = (state, allDestinations) => {
     const event = {

@@ -38,7 +38,7 @@ const NEW_POINT = {
   basePrice: 0,
   startDate: dayjs(),
   endDate: dayjs(),
-  destination: 1,
+  destination: undefined,
   isFavorite: false,
   offers: [],
   type: 'taxi',
@@ -49,6 +49,9 @@ const TIME_LIMIT = {
   UPPER_LIMIT: 1000,
 };
 
+const DATE_FORMAT_SHORT = 'MMM D';
+const DATE_FORMAT_DAY = 'DD';
+
 export {
   TIME,
   PRICE,
@@ -57,5 +60,7 @@ export {
   USER_ACTIONS,
   UPDATE_TYPES,
   NEW_POINT,
-  TIME_LIMIT
+  TIME_LIMIT,
+  DATE_FORMAT_DAY, 
+  DATE_FORMAT_SHORT
 };
