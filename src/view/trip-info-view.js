@@ -13,7 +13,7 @@ const addDestinationName = (destination, allDestinations) =>
 
 const getTripDestinationNames = (events) => {
   const tripDestinationNames = events.map((event) => event.destinationName);
-  
+
   if (tripDestinationNames.length <= 3) {
     return tripDestinationNames.join(' &mdash; ');
   } else {
