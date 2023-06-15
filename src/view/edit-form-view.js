@@ -120,14 +120,15 @@ const createEditFormTemplate = ({ id, selectedDestinationName, type, basePrice, 
         </button>
       </header>
       <section class="event__details">
-        <section class="event__section  event__section--offers" 
-          ${!allOffersForType.length ? 'visually-hidden' : ''}>
+        <section class="event__section  event__section--offers 
+          ${!allOffersForType.length ? 'visually-hidden' : ''}">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
           ${createAvailableOptionsTemplate(offers, allOffersForType)}
           </div>
         </section>
-        <section class="event__section  event__section--destination">
+        <section class="event__section  event__section--destination
+          ${selectedDestinationData.description === '' ? 'visually-hidden' : ''}">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">
           ${selectedDestinationData.description}
@@ -155,14 +156,19 @@ export default class EditFormView extends AbstractStatefulView {
     this.#setStopDatepicker();
   }
 
-  static parseEvent = (event, allOffers, allDestinations) => ({
-    ...event,
-    selectedDestinationName: allDestinations.find((item) => (item.id === event.destination)).name,
-    availableOffers: allOffers.find((item) => (item.type === event.type)).offers,
-    isDisabled: false,
-    isSaving: false,
-    isDeleting: false
-  });
+  static parseEvent = (event, allOffers, allDestinations) => {
+    const selectedDestination = allDestinations.find((item) => item.id === event.destination);
+    const availableOffers = allOffers.find((item) => item.type === event.type)?.offers || [];
+
+    return {
+      ...event,
+      selectedDestinationName: selectedDestination?.name || '',
+      availableOffers,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    };
+  };
 
   static parseState = (state, allDestinations) => {
     const event = {
@@ -313,7 +319,7 @@ export default class EditFormView extends AbstractStatefulView {
     } else {
       selectedOffers.splice(selectedOffers.indexOf(clickedOfferId), 1);
     }
-    this.updateElement({ offers: selectedOffers });
+    this._setState({ offers: selectedOffers });
   };
 
   #setInnerHandlers = () => {
@@ -325,6 +331,6 @@ export default class EditFormView extends AbstractStatefulView {
 
   #priceToggleHandler = (e) => {
     e.preventDefault();
-    this.updateElement({ basePrice: parseInt(e.target.value, 10) });
+    this._setState({ basePrice: parseInt(e.target.value, 10) });
   };
 }

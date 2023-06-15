@@ -1,48 +1,42 @@
 import dayjs from 'dayjs';
 import AbstractView from '../framework/view/abstract-view';
+import { DATE_FORMAT_DAY, DATE_FORMAT_SHORT } from '../const';
 
 const addOffersPrices = (eventType, eventOffers, allOffers) => {
-  const allOffersForType = allOffers.find((item) => item.type === eventType).offers;
-  const selectedOfferPrices = eventOffers.map((offer) => allOffersForType.find((item) => item.id === offer).price);
+  const allOffersForType = allOffers.find(({ type }) => type === eventType).offers;
+  const selectedOfferPrices = eventOffers.map((offer) => allOffersForType.find(({ id }) => id === offer).price);
   return selectedOfferPrices.reduce((sum, price) => sum + price, 0);
 };
 
 const addDestinationName = (destination, allDestinations) =>
-  allDestinations.find((item) => item.id === destination).name;
+  allDestinations.find(({ id }) => id === destination).name;
 
 const getTripDestinationNames = (events) => {
   const tripDestinationNames = events.map((event) => event.destinationName);
-  const uniqueNames = Array.from(new Set(tripDestinationNames));
-  switch (uniqueNames.length) {
-    case 1:
-      return `${uniqueNames[0]}`;
-    case 2:
-      return `${uniqueNames[0]} &mdash; ${uniqueNames[1]}`;
-    case 3:
-      return `${uniqueNames[0]} &mdash; ${uniqueNames[1]} &mdash; ${uniqueNames[2]}`;
-    default:
-      return `${uniqueNames[0]} &mdash; ... &mdash;${uniqueNames[uniqueNames.length - 1]}`;
+
+  if (tripDestinationNames.length <= 3) {
+    return tripDestinationNames.join(' &mdash; ');
+  } else {
+    const firstDestination = tripDestinationNames[0];
+    const lastDestination = tripDestinationNames[tripDestinationNames.length - 1];
+    return `${firstDestination} &mdash; ... &mdash; ${lastDestination}`;
   }
-
 };
 
 
-const getTotalPrice = (events) => {
-  const totalBasePrice = events.reduce((total, event) => total + event.basePrice, 0);
-  const totalOffersPrice = events.reduce((total, event) => total + event.offerPrices, 0);
-
-  return totalBasePrice + totalOffersPrice;
-};
+const getTotalPrice = (events) =>
+  events.reduce((total, { basePrice, offerPrices }) =>
+    total + basePrice + offerPrices, 0);
 
 const getTripDates = (events) => {
   const startTripDate = events[0].startDate;
   const endTripDate = events[events.length - 1].endDate;
 
   if (dayjs(startTripDate).month() === dayjs(endTripDate).month()) {
-    return `${dayjs(startTripDate).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format('DD')}`;
+    return `${dayjs(startTripDate).format(DATE_FORMAT_SHORT)}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format(DATE_FORMAT_DAY)}`;
   }
 
-  return `${dayjs(startTripDate).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format('MMM D')}`;
+  return `${dayjs(startTripDate).format(DATE_FORMAT_SHORT)}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format(DATE_FORMAT_SHORT)}`;
 };
 
 const createTripInfoTemplate = (events, allOffers, allDestinations) => {

@@ -69,5 +69,5 @@ export {
   filter,
   sortByPrice,
   sortByDuration,
-  sortByDate
+  sortByDate,
 };

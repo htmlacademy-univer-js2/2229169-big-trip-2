@@ -8,41 +8,6 @@ const PRICE = {
   MIN: 100,
   MAX: 600
 };
-const DESTINATIONS = [
-  {
-    id: 1,
-    description: 'Chamonix, is a beautiful city, a true asian pearl, with crowded streets.',
-    name: 'Chamonix',
-    pictures: [
-      {
-        src: 'https://picsum.photos/300/200?r=1',
-        description: 'Chamonix parliament building'
-      }
-    ]
-  },
-  {
-    id: 2,
-    description: 'Paris, is a overcrowded dirty city.',
-    name: 'Paris',
-    pictures: [
-      {
-        src: 'https://picsum.photos/300/200?r=2',
-        description: 'Somewhere in Paris'
-      }
-    ]
-  },
-  {
-    id: 3,
-    description: 'Amsterdam, is a delightful free city',
-    name: 'Amsterdam',
-    pictures: [
-      {
-        src: 'https://picsum.photos/300/200?r=3',
-        description: 'Amsterdam or not'
-      }
-    ]
-  }
-];
 
 const FILTER_TYPES = {
   EVERYTHING: 'everything',
@@ -73,7 +38,7 @@ const NEW_POINT = {
   basePrice: 0,
   startDate: dayjs(),
   endDate: dayjs(),
-  destination: 1,
+  destination: undefined,
   isFavorite: false,
   offers: [],
   type: 'taxi',
@@ -84,14 +49,18 @@ const TIME_LIMIT = {
   UPPER_LIMIT: 1000,
 };
 
+const DATE_FORMAT_SHORT = 'MMM D';
+const DATE_FORMAT_DAY = 'DD';
+
 export {
   TIME,
   PRICE,
-  DESTINATIONS,
   FILTER_TYPES,
   SORT_TYPES,
   USER_ACTIONS,
   UPDATE_TYPES,
   NEW_POINT,
-  TIME_LIMIT
+  TIME_LIMIT,
+  DATE_FORMAT_DAY,
+  DATE_FORMAT_SHORT
 };
