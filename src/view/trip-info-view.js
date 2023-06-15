@@ -12,18 +12,16 @@ const addDestinationName = (destination, allDestinations) =>
 
 const getTripDestinationNames = (events) => {
   const tripDestinationNames = events.map((event) => event.destinationName);
-  switch (tripDestinationNames.length) {
-    case 1:
-      return `${tripDestinationNames[0]}`;
-    case 2:
-      return `${tripDestinationNames[0]} &mdash; ${tripDestinationNames[1]}`;
-    case 3:
-      return `${tripDestinationNames[0]} &mdash; ${tripDestinationNames[1]} &mdash; ${tripDestinationNames[2]}`;
-    default:
-      return `${tripDestinationNames[0]} &mdash; ... &mdash;${tripDestinationNames[tripDestinationNames.length - 1]}`;
+  
+  if (tripDestinationNames.length <= 3) {
+    return tripDestinationNames.join(' &mdash; ');
+  } else {
+    const firstDestination = tripDestinationNames[0];
+    const lastDestination = tripDestinationNames[tripDestinationNames.length - 1];
+    return `${firstDestination} &mdash; ... &mdash; ${lastDestination}`;
   }
-
 };
+
 
 const getTotalPrice = (events) =>
   events.reduce((total, { basePrice, offerPrices }) =>
