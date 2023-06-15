@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from '../framework/view/abstract-view';
+import { DATE_FORMAT_DAY, DATE_FORMAT_SHORT } from '../const';
 
 const addOffersPrices = (eventType, eventOffers, allOffers) => {
   const allOffersForType = allOffers.find(({ type }) => type === eventType).offers;
@@ -12,18 +13,16 @@ const addDestinationName = (destination, allDestinations) =>
 
 const getTripDestinationNames = (events) => {
   const tripDestinationNames = events.map((event) => event.destinationName);
-  switch (tripDestinationNames.length) {
-    case 1:
-      return `${tripDestinationNames[0]}`;
-    case 2:
-      return `${tripDestinationNames[0]} &mdash; ${tripDestinationNames[1]}`;
-    case 3:
-      return `${tripDestinationNames[0]} &mdash; ${tripDestinationNames[1]} &mdash; ${tripDestinationNames[2]}`;
-    default:
-      return `${tripDestinationNames[0]} &mdash; ... &mdash;${tripDestinationNames[tripDestinationNames.length - 1]}`;
-  }
 
+  if (tripDestinationNames.length <= 3) {
+    return tripDestinationNames.join(' &mdash; ');
+  } else {
+    const firstDestination = tripDestinationNames[0];
+    const lastDestination = tripDestinationNames[tripDestinationNames.length - 1];
+    return `${firstDestination} &mdash; ... &mdash; ${lastDestination}`;
+  }
 };
+
 
 const getTotalPrice = (events) =>
   events.reduce((total, { basePrice, offerPrices }) =>
@@ -34,10 +33,10 @@ const getTripDates = (events) => {
   const endTripDate = events[events.length - 1].endDate;
 
   if (dayjs(startTripDate).month() === dayjs(endTripDate).month()) {
-    return `${dayjs(startTripDate).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format('DD')}`;
+    return `${dayjs(startTripDate).format(DATE_FORMAT_SHORT)}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format(DATE_FORMAT_DAY)}`;
   }
 
-  return `${dayjs(startTripDate).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format('MMM D')}`;
+  return `${dayjs(startTripDate).format(DATE_FORMAT_SHORT)}&nbsp;&mdash;&nbsp;${dayjs(endTripDate).format(DATE_FORMAT_SHORT)}`;
 };
 
 const createTripInfoTemplate = (events, allOffers, allDestinations) => {
