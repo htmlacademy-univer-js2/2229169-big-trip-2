@@ -171,9 +171,10 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   static parseState = (state, allDestinations) => {
+    const destination = allDestinations.find((item) => item.name === state.selectedDestinationName);
     const event = {
       ...state,
-      destination: allDestinations.find((item) => (item.name === state.selectedDestinationName)).id
+      destination: destination?.id
     };
     delete event.selectedDestinationName;
     delete event.availableOffers;
